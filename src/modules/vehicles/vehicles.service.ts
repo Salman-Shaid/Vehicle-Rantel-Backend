@@ -13,9 +13,7 @@ export interface Vehicle extends VehiclePayload {
   created_at: string;
 }
 
-/**
- * Create a new vehicle
- */
+// Create vehicle
 export const create = async (payload: VehiclePayload): Promise<Vehicle> => {
   const { vehicle_name, type, registration_number, daily_rent_price, availability_status } = payload;
 
@@ -25,13 +23,11 @@ export const create = async (payload: VehiclePayload): Promise<Vehicle> => {
 
   const client = await pool.connect();
   try {
-    // Ensure unique registration number
     const check = await client.query(
       'SELECT id FROM vehicles WHERE registration_number = $1',
       [registration_number]
     );
-    const existing = check.rowCount ?? 0; // null-safe
-    if (existing > 0) throw { status: 400, message: 'Registration number already exists' };
+    if ((check.rowCount ?? 0) > 0) throw { status: 400, message: 'Registration number already exists' };
 
     const res = await client.query(
       `INSERT INTO vehicles (vehicle_name, type, registration_number, daily_rent_price, availability_status)
@@ -45,9 +41,7 @@ export const create = async (payload: VehiclePayload): Promise<Vehicle> => {
   }
 };
 
-/**
- * Get all vehicles
- */
+// Get all vehicles
 export const getAll = async (): Promise<Vehicle[]> => {
   const client = await pool.connect();
   try {
@@ -58,9 +52,7 @@ export const getAll = async (): Promise<Vehicle[]> => {
   }
 };
 
-/**
- * Get vehicle by ID
- */
+// Get vehicle by ID
 export const getById = async (vehicleId: number | string): Promise<Vehicle | null> => {
   const client = await pool.connect();
   try {
@@ -71,13 +63,8 @@ export const getById = async (vehicleId: number | string): Promise<Vehicle | nul
   }
 };
 
-/**
- * Update vehicle
- */
-export const update = async (
-  vehicleId: number | string,
-  payload: Partial<VehiclePayload>
-): Promise<Vehicle> => {
+// Update vehicle
+export const update = async (vehicleId: number | string, payload: Partial<VehiclePayload>): Promise<Vehicle> => {
   const client = await pool.connect();
   try {
     const allowedFields: (keyof VehiclePayload)[] = [
@@ -112,19 +99,15 @@ export const update = async (
   }
 };
 
-/**
- * Delete vehicle
- */
+// Delete vehicle
 export const deleteVehicle = async (vehicleId: number | string): Promise<void> => {
   const client = await pool.connect();
   try {
-    // Prevent deletion if vehicle has active bookings
     const chk = await client.query(
-      `SELECT id FROM bookings WHERE vehicle_id = $1 AND status = 'active' LIMIT 1`,
-      [vehicleId]
+      'SELECT id FROM bookings WHERE vehicle_id = $1 AND status = $2 LIMIT 1',
+      [vehicleId, 'active']
     );
-    const activeBookings = chk.rowCount ?? 0; // null-safe
-    if (activeBookings > 0) throw { status: 400, message: 'Cannot delete vehicle with active bookings' };
+    if ((chk.rowCount ?? 0) > 0) throw { status: 400, message: 'Cannot delete vehicle with active bookings' };
 
     await client.query('DELETE FROM vehicles WHERE id = $1', [vehicleId]);
   } finally {

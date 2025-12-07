@@ -39,7 +39,7 @@ export const signup = async (input: SignupInput) => {
     const result = await client.query(
       `INSERT INTO users (name,email,password,phone,role)
        VALUES ($1,$2,$3,$4,$5)
-       RETURNING id,name,email,phone,role,created_at`,
+       RETURNING id,name,email,phone,role`,
       [name, email.toLowerCase(), hashed, phone, role]
     );
 
@@ -53,27 +53,21 @@ export const signin = async (email: string, password: string) => {
   const client = await pool.connect();
   try {
     const res = await client.query(
-      'SELECT id,email,password,role FROM users WHERE LOWER(email)=LOWER($1)',
+      'SELECT id,name,email,password,phone,role FROM users WHERE LOWER(email) = LOWER($1)',
       [email]
     );
 
-    if (res.rowCount === 0)
-      throw { status: 401, message: 'Invalid credentials' };
+    if (res.rowCount === 0) throw { status: 401, message: 'Invalid credentials' };
 
     const user = res.rows[0];
     const match = await bcrypt.compare(password, user.password);
-    if (!match)
-      throw { status: 401, message: 'Invalid credentials' };
+    if (!match) throw { status: 401, message: 'Invalid credentials' };
 
+    // Generate JWT token
     const payload = { id: user.id, email: user.email, role: user.role };
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXP, algorithm: 'HS256' });
 
-    // ✅ v8 usage: works perfectly
-    const token = jwt.sign(payload, JWT_SECRET, {
-      expiresIn: JWT_EXP,
-      algorithm: 'HS256',
-    });
-
-    return token;
+    return { token, user: { id: user.id, name: user.name, email: user.email, phone: user.phone, role: user.role } };
   } finally {
     client.release();
   }
