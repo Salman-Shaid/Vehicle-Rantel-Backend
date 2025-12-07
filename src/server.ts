@@ -1,4 +1,4 @@
-// api/index.ts (Vercel serverless)
+
 import { VercelRequest, VercelResponse } from '@vercel/node';
 import app from './app';
 import setupDB from './db/setupDB';
