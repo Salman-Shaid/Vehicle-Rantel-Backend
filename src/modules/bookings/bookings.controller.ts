@@ -54,13 +54,12 @@ export const updateBooking = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ error: 'Booking ID and action are required' });
     }
 
-    // Customer can cancel before start date
+
     if (req.user.role === 'customer' && action === 'cancel') {
       const updated = await BookingsService.cancelByCustomer(req.user.id, bookingId);
       return res.json({ data: updated });
     }
 
-    // Admin can mark returned
     if (req.user.role === 'admin' && action === 'return') {
       const updated = await BookingsService.markReturned(bookingId);
       return res.json({ data: updated });
