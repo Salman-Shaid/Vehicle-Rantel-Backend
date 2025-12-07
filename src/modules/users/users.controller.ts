@@ -54,10 +54,6 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
   }
 };
 
-/**
- * Delete user
- * Access: Admin only
- */
 export const deleteUser = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.params.userId;

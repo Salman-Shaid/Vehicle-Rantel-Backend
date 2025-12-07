@@ -22,9 +22,6 @@ export interface UpdateUserPayload {
   role?: 'admin' | 'customer';
 }
 
-/**
- * Get all users
- */
 export const getAll = async (): Promise<User[]> => {
   const client = await pool.connect();
   try {
@@ -37,9 +34,6 @@ export const getAll = async (): Promise<User[]> => {
   }
 };
 
-/**
- * Update user
- */
 export const update = async (userId: string, payload: UpdateUserPayload): Promise<User> => {
   const client = await pool.connect();
   try {
@@ -72,9 +66,6 @@ export const update = async (userId: string, payload: UpdateUserPayload): Promis
   }
 };
 
-/**
- * Delete user
- */
 export const deleteUser = async (userId: string): Promise<void> => {
   const client = await pool.connect();
   try {

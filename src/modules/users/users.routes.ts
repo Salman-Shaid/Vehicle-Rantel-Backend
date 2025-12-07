@@ -6,7 +6,7 @@ import * as UsersController from './users.controller';
 const router = Router();
 
 router.get('/', authenticate, authorizeRoles(['admin']), UsersController.getAllUsers);
-router.put('/:userId', authenticate, UsersController.updateUser); // inside controller enforce Admin or Own
+router.put('/:userId', authenticate, UsersController.updateUser); 
 router.delete('/:userId', authenticate, authorizeRoles(['admin']), UsersController.deleteUser);
 
 export default router;
