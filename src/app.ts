@@ -18,7 +18,7 @@ app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/vehicles', vehicleRoutes);
 app.use('/api/v1/bookings', bookingRoutes);
 
-// error handler
+
 app.use(errorHandler);
 
 export default app;
