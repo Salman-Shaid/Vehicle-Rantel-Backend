@@ -7,10 +7,6 @@ dotenv.config();
 
 const SALT_ROUNDS = parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10);
 
-/**
- * Get all users
- * Access: Admin only
- */
 export const getAllUsers = async (req: AuthRequest, res: Response) => {
   try {
     if (!req.user || req.user.role !== 'admin') {
@@ -23,10 +19,7 @@ export const getAllUsers = async (req: AuthRequest, res: Response) => {
   }
 };
 
-/**
- * Update user
- * Access: Admin or own profile
- */
+
 export const updateUser = async (req: AuthRequest, res: Response) => {
   try {
     const userId = req.params.userId;
@@ -34,12 +27,11 @@ export const updateUser = async (req: AuthRequest, res: Response) => {
 
     const payload = req.body;
 
-    // Allow only admin or owner
+
     if (!req.user || (req.user.role !== 'admin' && req.user.id !== userId)) {
       return res.status(403).json({ success: false, message: 'Forbidden' });
     }
 
-    // If password is provided, hash it
     if (payload.password) {
       if (payload.password.length < 6) {
         return res.status(400).json({ success: false, message: 'Password must be at least 6 characters' });

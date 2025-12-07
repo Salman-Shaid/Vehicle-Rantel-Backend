@@ -1,9 +1,7 @@
-// vehicles.controller.ts
 import { Request, Response } from 'express';
 import * as VehiclesService from './vehicles.service';
 import { AuthRequest } from '../../middlewares/auth.middleware';
 
-// Create vehicle (Admin only)
 export const createVehicle = async (req: AuthRequest, res: Response) => {
   try {
     const vehicle = await VehiclesService.create(req.body);
@@ -20,7 +18,6 @@ export const createVehicle = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// Get all vehicles (Public)
 export const getAllVehicles = async (_req: Request, res: Response) => {
   try {
     const vehicles = await VehiclesService.getAll();
@@ -44,7 +41,6 @@ export const getAllVehicles = async (_req: Request, res: Response) => {
   }
 };
 
-// Get vehicle by ID (Public)
 export const getVehicleById = async (req: Request, res: Response) => {
   try {
     const { vehicleId } = req.params;
@@ -70,7 +66,7 @@ export const getVehicleById = async (req: Request, res: Response) => {
   }
 };
 
-// Update vehicle (Admin only)
+
 export const updateVehicle = async (req: AuthRequest, res: Response) => {
   try {
     const { vehicleId } = req.params;
@@ -92,7 +88,6 @@ export const updateVehicle = async (req: AuthRequest, res: Response) => {
   }
 };
 
-// Delete vehicle (Admin only)
 export const deleteVehicle = async (req: AuthRequest, res: Response) => {
   try {
     const { vehicleId } = req.params;
