@@ -11,6 +11,10 @@ import { errorHandler } from './middlewares/error.middleware';
 const app = express();
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('Vehicle Rental API is running!');
+});
+
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/vehicles', vehicleRoutes);

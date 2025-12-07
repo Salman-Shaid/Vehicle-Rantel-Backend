@@ -1,13 +1,10 @@
+// api/index.ts (Vercel serverless)
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import app from './app';
 import setupDB from './db/setupDB';
 
-const port = process.env.PORT || 5000;
+setupDB().then(() => console.log('Database ready')).catch(console.error);
 
-setupDB().then(() => {
-  console.log('Database ready');
-  app.listen(port, () => {
-    console.log(`Server listening on port ${port}`);
-  });
-}).catch((err) => {
-  console.error('Failed to setup DB:', err);
-});
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  app(req, res);
+}
