@@ -62,7 +62,7 @@ export const create = async (payload: CreatePayload) => {
   }
 };
 
-// Admin view: all bookings with customer & vehicle info
+
 export const getAll = async () => {
   const client = await pool.connect();
   try {
@@ -92,7 +92,6 @@ export const getAll = async () => {
   }
 };
 
-// Customer view: only own bookings with vehicle info
 export const getByCustomer = async (customerId: string) => {
   const client = await pool.connect();
   try {
@@ -119,7 +118,6 @@ export const getByCustomer = async (customerId: string) => {
   }
 };
 
-// Customer cancel booking
 export const cancelByCustomer = async (customerId: string, bookingId: string) => {
   const client = await pool.connect();
   try {
@@ -146,7 +144,6 @@ export const cancelByCustomer = async (customerId: string, bookingId: string) =>
   }
 };
 
-// Admin mark as returned
 export const markReturned = async (bookingId: string) => {
   const client = await pool.connect();
   try {

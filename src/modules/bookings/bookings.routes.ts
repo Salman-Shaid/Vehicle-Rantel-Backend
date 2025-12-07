@@ -5,10 +5,11 @@ import * as BookingsController from './bookings.controller';
 
 const router = Router();
 
-router.post('/', authenticate, BookingsController.createBooking);
+authorizeRoles(['admin', 'customer'])
 
-router.get('/', authenticate, BookingsController.getBookings); 
+router.post('/', authenticate, authorizeRoles(['admin', 'customer']), BookingsController.createBooking);
+router.get('/', authenticate, authorizeRoles(['admin', 'customer']), BookingsController.getBookings); 
+router.put('/:bookingId', authenticate, authorizeRoles(['admin', 'customer']), BookingsController.updateBooking);
 
-router.put('/:bookingId', authenticate, BookingsController.updateBooking); 
 
 export default router;
