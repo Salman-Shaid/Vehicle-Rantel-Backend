@@ -63,7 +63,6 @@ export const signin = async (email: string, password: string) => {
     const match = await bcrypt.compare(password, user.password);
     if (!match) throw { status: 401, message: 'Invalid credentials' };
 
-    // Generate JWT token
     const payload = { id: user.id, email: user.email, role: user.role };
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXP, algorithm: 'HS256' });
 

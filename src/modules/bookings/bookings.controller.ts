@@ -66,7 +66,6 @@ export const updateBooking = async (req: AuthRequest, res: Response) => {
       return res.status(400).json({ success: false, message: 'Booking ID and status are required' });
     }
 
-    // Customer can cancel only
     if (req.user.role === 'customer' && status === 'cancelled') {
       const updated = await BookingsService.cancelByCustomer(req.user.id, bookingId);
       return res.json({
@@ -76,7 +75,7 @@ export const updateBooking = async (req: AuthRequest, res: Response) => {
       });
     }
 
-    // Admin can mark returned
+
     if (req.user.role === 'admin' && status === 'returned') {
       const updated = await BookingsService.markReturned(bookingId);
       return res.json({
