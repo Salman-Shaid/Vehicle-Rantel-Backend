@@ -3,7 +3,6 @@ import pool from './pool';
 const setupDB = async () => {
   const client = await pool.connect();
   try {
-    // pgcrypto for UUIDs
     await client.query(`CREATE EXTENSION IF NOT EXISTS "pgcrypto";`);
 
     await client.query(`
@@ -44,9 +43,9 @@ const setupDB = async () => {
       );
     `);
 
-    console.log('✅ Database setup completed!');
+    console.log('Database setup completed!');
   } catch (err) {
-    console.error('❌ Error setting up DB:', err);
+    console.error('Error setting up DB:', err);
   } finally {
     client.release();
   }

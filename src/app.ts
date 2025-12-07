@@ -1,4 +1,3 @@
-// src/app.ts
 import express from 'express';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -12,7 +11,6 @@ import { errorHandler } from './middlewares/error.middleware';
 const app = express();
 app.use(express.json());
 
-// API v1
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/vehicles', vehicleRoutes);
